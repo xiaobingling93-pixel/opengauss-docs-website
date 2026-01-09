@@ -19,9 +19,8 @@ import '@/assets/style/element-plus/index.scss';
 import MarkdownTitle from '@/components/markdown/MarkdownTitle.vue';
 import MarkdownImage from '@/components/markdown/MarkdownImage.vue';
 import { installer } from '@/shared/analytics';
-import { getCustomCookie, removeCustomCookie } from '@/utils/cookie';
+import { removeCustomCookie } from '@/utils/cookie';
 import { BAIDU_HM } from '@/config/urls';
-import { COOKIE_KEY_EN } from '@/stores/common';
 import { request } from '@/shared/axios';
 
 export default {
@@ -44,10 +43,6 @@ export default {
       service: 'docs',
       request(data) {
         request.post('/api-dsapi/query/track/opengauss', data, { showError: false });
-      },
-      isCookieAgreed() {
-        if (location.pathname.startsWith('/zh')) return true;
-        return getCustomCookie(COOKIE_KEY_EN) === '1';
       },
       onEnable() {
         // 百度埋点
