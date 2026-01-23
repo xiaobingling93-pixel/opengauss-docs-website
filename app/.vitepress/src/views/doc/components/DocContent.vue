@@ -9,6 +9,7 @@ import DocBug from './DocBug.vue';
 
 import { useLocale } from '@/composables/useLocale';
 import { useVersionStore } from '@/stores/version';
+import { useViewStore } from '@/stores/view';
 
 const emits = defineEmits<{
   (evt: 'update-menu-expaned'): void;
@@ -16,6 +17,8 @@ const emits = defineEmits<{
   (evt: 'page-change', type: 'prev' | 'next'): void;
   (evt: 'click-hash-link'): void;
 }>();
+
+const viewStore = useViewStore();
 
 // -------------------- 处理跨语言、跨指南跳转 --------------------
 const router = useRouter();
@@ -88,7 +91,7 @@ onBeforeUnmount(() => {
     </ClientOnly>
   </div>
   <ClientOnly>
-    <DocBug />
+    <DocBug v-if="!viewStore.isNoMenuView" />
   </ClientOnly>
 </template>
 

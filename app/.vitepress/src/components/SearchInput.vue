@@ -13,6 +13,13 @@ import type { SearchRecommendT } from '@/@types/type-search';
 import { getSearchRecommend } from '@/api/api-search';
 import { onClickOutside, useElementSize } from '@vueuse/core';
 
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const emit = defineEmits(['switchVisible']);
 
 const { t, locale } = useLocale();
@@ -146,6 +153,7 @@ const inputWidth = computed(() => {
       :style="{ width: '100%' }"
       v-model="searchValue"
       size="large"
+      :disabled="disabled"
       :placeholder="t('docs.innerInputTip')"
       @keyup.enter="enterSearchDoc"
       @clear="clearSearchDoc"

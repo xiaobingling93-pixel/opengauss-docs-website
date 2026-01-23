@@ -6,14 +6,16 @@ import FloatButtonAnchor from '@/components/float/FloatButtonAnchor.vue';
 import FloatButtonItemsDocsMobile from '@/components/float/FloatButtonItemsDocsMobile.vue';
 
 import { useScreen } from '@/composables/useScreen';
+import { useViewStore } from '@/stores/view';
 
 const { gtPhone } = useScreen();
+const viewStore = useViewStore();
 </script>
 
 <template>
   <div class="docs-float">
     <template v-if="gtPhone">
-      <FloatButtonFeedback />
+      <FloatButtonFeedback v-if="!viewStore.isNoMenuView" />
       <FloatButtonItems source="docs" />
     </template>
     <template v-else>

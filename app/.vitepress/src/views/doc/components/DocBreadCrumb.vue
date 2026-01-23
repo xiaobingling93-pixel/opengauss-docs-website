@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vitepress';
 import { OBreadcrumb, OBreadcrumbItem, OIcon } from '@opensig/opendesign';
 
@@ -7,10 +8,22 @@ import IconChevronRight from '~icons/app/icon-chevron-right.svg';
 import { useLocale } from '@/composables/useLocale';
 import { useSearchingStore } from '@/stores/common';
 import { useNodeStore } from '@/stores/node';
+import { useViewStore } from '@/stores/view';
 
 const { locale, t } = useLocale();
 const nodeStore = useNodeStore();
 const searchStore = useSearchingStore();
+const viewStore = useViewStore();
+
+const noMenuLabel = ref('');
+
+onMounted(() => {
+  setTimeout(() => {
+    if (viewStore.isNoMenuView) {
+      noMenuLabel.value = document.querySelector('.markdown-body h1 .title')?.textContent || '';
+    }
+  }, 300);
+});
 
 // -------------------- 跳转 --------------------
 const router = useRouter();
@@ -36,7 +49,9 @@ const goToPage = (href: string) => {
       <!-- 手册节点 -->
       <OBreadcrumbItem v-if="nodeStore.manualNode && !searchStore.isSearching" class="manual-item">{{ nodeStore.manualNode.label }}</OBreadcrumbItem>
       <!-- 当前节点 -->
-      <OBreadcrumbItem>{{ searchStore.isSearching ? t('docs.searchResult') : nodeStore.pageNode?.label }}</OBreadcrumbItem>
+      <OBreadcrumbItem>{{
+        viewStore.isNoMenuView ? noMenuLabel : searchStore.isSearching ? t('docs.searchResult') : nodeStore.pageNode?.label
+      }}</OBreadcrumbItem>
     </OBreadcrumb>
   </div>
 </template>

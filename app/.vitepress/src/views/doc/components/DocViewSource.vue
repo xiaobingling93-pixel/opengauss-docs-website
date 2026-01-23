@@ -19,19 +19,19 @@ const { width } = useWindowSize();
 const route = useRoute();
 const nodeStore = useNodeStore();
 
-const giteeUrl = ref('');
+const sourceUrl = ref('');
 
 watch(
   () => route.path,
   () => {
     if (isClient) {
-      giteeUrl.value = getSourceUrl(nodeStore.pageNode);
+      sourceUrl.value = getSourceUrl(nodeStore.pageNode);
     }
   }
 );
 
 onMounted(() => {
-  giteeUrl.value = getSourceUrl(nodeStore.pageNode);
+  sourceUrl.value = getSourceUrl(nodeStore.pageNode);
 });
 
 // -------------------- 检查标题和viewsource是否有重叠 --------------------
@@ -53,12 +53,21 @@ onMounted(() => {
   checkOverlap();
 });
 
-// -------------------- 移动端插入gitee --------------------
-const insertGiteeBtn = () => {
+// -------------------- 移动端插入查看源文件 --------------------
+const insertViewSourceBtn = () => {
+  const url = getSourceUrl(nodeStore.pageNode);
+  if (!url) {
+    const container = document.querySelector('.article-detail-container');
+    if (container) {
+      container.remove();
+    }
+    return;
+  }
+
   if (isPhone.value || overlap.value) {
-    const link = document.querySelector<HTMLElement>('.markdown-body .gitee') as HTMLAnchorElement;
+    const link = document.querySelector<HTMLElement>('.markdown-body .view-source') as HTMLAnchorElement;
     if (link) {
-      link.href = getSourceUrl(nodeStore.pageNode);
+      link.href = url;
       return;
     }
 
@@ -68,8 +77,8 @@ const insertGiteeBtn = () => {
       const container = document.createElement('div');
       container.className = 'article-detail-container';
       const a = document.createElement('a');
-      a.className = 'gitee';
-      a.href = getSourceUrl(nodeStore.pageNode);
+      a.className = 'view-source';
+      a.href = url;
       a.target = '_blank';
       a.textContent = t('docs.viewSource') || '';
       const svgString = `
@@ -86,7 +95,7 @@ const insertGiteeBtn = () => {
       titleDom.nextSibling.parentNode?.insertBefore(container, titleDom.nextSibling);
     }
   } else {
-    const link = document.querySelector<HTMLElement>('.markdown-body .gitee') as HTMLAnchorElement;
+    const link = document.querySelector<HTMLElement>('.markdown-body .view-source') as HTMLAnchorElement;
     if (link) {
       link.remove();
     }
@@ -96,13 +105,13 @@ const insertGiteeBtn = () => {
 watch([isPhone, width, route], async () => {
   await nextTick();
   checkOverlap();
-  insertGiteeBtn();
+  insertViewSourceBtn();
 });
 </script>
 
 <template>
-  <div v-show="!isPhone" class="gitee-view-source" :class="{ hidden: overlap }">
-    <a ref="linkRef" class="link" :href="giteeUrl" target="_blank" rel="noopener noreferrer">
+  <div v-if="sourceUrl" v-show="!isPhone" class="view-source" :class="{ hidden: overlap }">
+    <a ref="linkRef" class="link" :href="sourceUrl" target="_blank" rel="noopener noreferrer">
       <span class="title">{{ t('docs.viewSource') }}</span>
       <OIcon class="icon"><IconOutLink /></OIcon>
     </a>
@@ -114,7 +123,7 @@ watch([isPhone, width, route], async () => {
   margin-top: var(--o-gap-2);
   margin-bottom: var(--o-gap-6);
 
-  .gitee {
+  .view-source {
     display: flex;
     align-items: center;
     color: var(--o-color-link1);
@@ -130,7 +139,7 @@ watch([isPhone, width, route], async () => {
 </style>
 
 <style lang="scss" scoped>
-.gitee-view-source {
+.view-source {
   position: absolute;
   top: 0;
   right: 0;

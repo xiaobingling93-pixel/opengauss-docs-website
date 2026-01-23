@@ -2,7 +2,7 @@
 import { ref, watch, computed } from 'vue';
 import { useData, useRouter, useRoute } from 'vitepress';
 import i18nConfig from '@/i18n';
-import { OIcon } from '@opensig/opendesign';
+import { isArray, OIcon } from '@opensig/opendesign';
 
 import HeaderTheme from './ItemTheme.vue';
 import HeaderLanguage from './ItemLang.vue';
@@ -148,7 +148,7 @@ const closeMenu = () => {
       </nav>
 
       <div class="nav-aside" :class="{ 'nav-aside-home': navActive === 'home' }" @click="closeMenu">
-        <ul v-if="navActive !== 'SOURCE_CODE'" class="nav-aside-wrapper">
+        <ul v-if="navActive !== 'SOURCE_CODE' && isArray(navInfo?.CHILDREN)" class="nav-aside-wrapper">
           <li v-for="item in navInfo.CHILDREN" :value="item.NAME" :title="item.NAME" :key="item.NAME" class="nav-aside-content">
             <p class="content-title">{{ item.NAME }}</p>
 
