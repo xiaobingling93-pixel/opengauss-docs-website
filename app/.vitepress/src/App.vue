@@ -1,25 +1,37 @@
 <script setup lang="ts">
-import { useRouter } from 'vitepress';
-
+import { useRoute, useRouter } from 'vitepress';
+import { OPlusConfigProvider, OCookieNotice } from '@opendesign-plus/components';
 import { OScroller, OConfigProvider } from '@opensig/opendesign';
 import zhCN from '@opensig/opendesign/es/locale/lang/zh-cn';
 import enUS from '@opensig/opendesign/es/locale/lang/en-us';
 
 import AppHeader from '@/components/header/AppHeader.vue';
-import CookieNotice from '@/components/CookieNotice.vue';
 import TheDoc from '@/views/doc/TheDoc.vue';
 
 import { scrollToTop } from '@/utils/common';
 import { useLocale } from '@/composables/useLocale';
 import { useViewStore } from '@/stores/view';
+import { nextTick, ref, watch } from 'vue';
 
-const { isZh } = useLocale();
+const { isZh, locale } = useLocale();
 const viewStore = useViewStore();
 
 const router = useRouter();
 router.onAfterRouteChange = () => {
   scrollToTop(0, false);
 };
+
+const HOME_URL = 'https://opengauss.org';
+const cookieNoticeVisible = ref(false);
+const cookieRef = ref();
+const route = useRoute();
+watch(
+  () => route.path,
+  async () => {
+    await nextTick();
+    cookieRef.value?.check();
+  }
+);
 </script>
 
 <template>
@@ -33,10 +45,14 @@ router.onAfterRouteChange = () => {
         <TheDoc v-else />
       </main>
     </OScroller>
-
-    <ClientOnly>
-      <CookieNotice />
-    </ClientOnly>
+    <OPlusConfigProvider :locale="locale">
+      <OCookieNotice
+        ref="cookieRef"
+        community="openGauss"
+        v-model:visible="cookieNoticeVisible"
+        :detail-url="`${HOME_URL}/${locale}/cookies/`"
+      />
+    </OPlusConfigProvider>
   </OConfigProvider>
 </template>
 
@@ -100,7 +116,8 @@ router.onAfterRouteChange = () => {
   background-color: var(--o-color-fill1);
 }
 
-.ly-header, .ly-main {
+.ly-header,
+.ly-main {
   transition: opacity var(--o-duration-m2) var(--o-easing-standard-in);
 }
 

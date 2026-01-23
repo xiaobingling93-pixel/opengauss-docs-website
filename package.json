@@ -22,6 +22,7 @@
     }
   },
   "dependencies": {
+    "@opendesign-plus/components": "0.0.1-rc.5",
     "@opensig/open-analytics": "0.0.9",
     "@opensig/opendesign": "1.0.2",
     "@vueuse/core": "9.12.0",

@@ -221,4 +221,9 @@ export default {
       };
     },
   },
+  vite: {
+    ssr: {
+      noExternal: ['@opendesign-plus/components', 'element-plus']
+    }
+  }
 };
