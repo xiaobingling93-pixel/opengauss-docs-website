@@ -24,11 +24,15 @@ export const useViewStore = defineStore('view', () => {
   // 页面是否加载完成
   const isPageLoaded = ref(isHomeView.value || isCustomView.value);
 
+  // 页面是否为无菜单页面
+  const isNoMenuView = ref(false);
+
   return {
     isPageLoaded,
     siderWidth,
     isScrolling,
     isHomeView,
     isCustomView,
+    isNoMenuView,
   };
 });

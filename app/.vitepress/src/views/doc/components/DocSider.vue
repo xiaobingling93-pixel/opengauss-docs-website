@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vitepress';
 import { ORadioGroup, ORadio, OIcon, useMessage } from '@opensig/opendesign';
 
@@ -85,6 +85,19 @@ const onChangeDocType = (val: string) => {
 // -------------------- 菜单 --------------------
 const menuVal = ref('');
 const menuExpandedKeys = ref<string[]>([]);
+
+const menuItems = computed(() => {
+  if (viewStore.isNoMenuView) {
+    const id = `docs-${locale.value}-${versionStore.version}`;
+    const item = nodeStore.root.children.find((item) => item.id === id);
+    if (item) {
+      return item.children;
+    }
+  }
+
+  return nodeStore.versionNodes?.type === 'docs-single-manual-root' ? [nodeStore.versionNodes] : nodeStore.versionNodes?.children;
+});
+
 const updateExpandedKeys = () => {
   if (!nodeStore.pageNode) {
     return;
@@ -134,20 +147,14 @@ watch(
     </div>
     <div class="doc-sidebar-mb" :class="{ 'is-closed': isSidebarHidden }">
       <div class="doc-sidebar-header" v-if="versionStore.version !== 'common'">
-        <ORadioGroup v-model="docType" @change="onChangeDocType">
+        <ORadioGroup v-model="docType" :disabled="viewStore.isNoMenuView" @change="onChangeDocType">
           <ORadio value="">{{ t('docs.enterprise') }}</ORadio>
           <ORadio value="lite">{{ t('docs.lite') }}</ORadio>
         </ORadioGroup>
       </div>
-      <SearchInput />
+      <SearchInput :disabled="viewStore.isNoMenuView" />
       <ClientOnly>
-        <DocMenu
-          v-model="menuVal"
-          v-model:expanded="menuExpandedKeys"
-          :items="nodeStore.versionNodes?.type === 'docs-single-manual-root' ? [nodeStore.versionNodes] : nodeStore.versionNodes?.children"
-          @change="onMenuChange"
-          @loaded="viewStore.isPageLoaded = true"
-        />
+        <DocMenu v-model="menuVal" v-model:expanded="menuExpandedKeys" :items="menuItems" @change="onMenuChange" @loaded="viewStore.isPageLoaded = true" />
       </ClientOnly>
     </div>
   </template>
@@ -155,17 +162,17 @@ watch(
   <div v-else class="doc-sidebar" :class="{ 'is-closed': lePad && isSidebarHidden }">
     <div class="doc-sidebar-header">
       <DocVersion version="latest" />
-      <ORadioGroup v-if="versionStore.version !== 'common'" v-model="docType" @change="onChangeDocType">
+      <ORadioGroup v-if="versionStore.version !== 'common'" v-model="docType" :disabled="viewStore.isNoMenuView" @change="onChangeDocType">
         <ORadio value="">{{ t('docs.enterprise') }}</ORadio>
         <ORadio value="lite">{{ t('docs.lite') }}</ORadio>
       </ORadioGroup>
     </div>
-    <SearchInput />
+    <SearchInput :disabled="viewStore.isNoMenuView" />
     <ClientOnly>
       <DocMenu
         v-model="menuVal"
         v-model:expanded="menuExpandedKeys"
-        :items="nodeStore.versionNodes?.type === 'docs-single-manual-root' ? [nodeStore.versionNodes] : nodeStore.versionNodes?.children"
+        :items="menuItems"
         :menu-width="`${viewStore.siderWidth}px`"
         @change="onMenuChange"
         @loaded="viewStore.isPageLoaded = true"

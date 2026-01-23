@@ -9,7 +9,7 @@ import useSelect from '@/composables/useSelect';
 
 const route = useRoute();
 const { size } = useScreen();
-const { visible, x, y } = useSelect('.markdown-body');
+const { visible, x, y, selectionText } = useSelect('.markdown-body');
 
 watch(
   size,
@@ -27,7 +27,16 @@ watch(route, () => {
 </script>
 
 <template>
-  <FeedbackPrIssue :visible="visible" trigger="none" position="top" :offset="84" :show-desc="false" :wrapper="false">
+  <FeedbackPrIssue
+    :visible="visible"
+    trigger="none"
+    position="top"
+    :offset="84"
+    :show-desc="false"
+    :wrapper="false"
+    :selection-text="selectionText"
+    @click-item="visible = false"
+  >
     <div
       :style="{
         '--x': x + 'px',

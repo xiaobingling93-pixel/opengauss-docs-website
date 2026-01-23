@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 import DocBreadCrumb from './components/DocBreadCrumb.vue';
 import DocSearchResult from './components/DocSearchResult.vue';
@@ -12,14 +12,26 @@ import DocFloat from './components/DocFloat.vue';
 import { useSearchingStore } from '@/stores/common';
 import { useScreen } from '@/composables/useScreen';
 import { useViewStore } from '@/stores/view';
+import { useNodeStore } from '@/stores/node';
 
 const { isPhone, lePad } = useScreen();
 const searchStore = useSearchingStore();
 const viewStore = useViewStore();
+const nodeStore = useNodeStore();
 
 const docSiderWidth = computed(() => {
   return lePad.value ? `272px` : `${viewStore.siderWidth}px`;
 });
+
+watch(
+  () => nodeStore.currentNode,
+  (val) => {
+    viewStore.isNoMenuView = !val;
+  },
+  {
+    immediate: true,
+  }
+);
 </script>
 
 <template>

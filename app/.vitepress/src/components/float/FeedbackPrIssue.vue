@@ -9,7 +9,7 @@ import { getSourceUrl } from '@/utils/common';
 import { useNodeStore } from '@/stores/node';
 import { GITCODE_LINK } from '@/config/urls';
 
-defineProps({
+const props = defineProps({
   visible: {
     type: Boolean,
     default: false,
@@ -34,16 +34,23 @@ defineProps({
     type: Boolean,
     default: true,
   },
+  selectionText: {
+    type: String,
+    default: '',
+  },
 });
 
+const emits = defineEmits(['click-item']);
 
 const { t } = useLocale();
 const nodeStore = useNodeStore();
 
 const feedbackWrapperRef = ref<HTMLElement>();
 const submitFeedback = (feedbackType: 'pr' | 'issue') => {
+  emits('click-item');
+  
   if (feedbackType === 'pr') {
-    const url = getSourceUrl(nodeStore.pageNode).replace('blob', 'edit');
+    const url = `${getSourceUrl(nodeStore.pageNode).replace('blob', 'edit')}${props.selectionText ? `?search=${props.selectionText}` : ''}`;
     if (url) {
       window.open(url, '_blank', 'noopener noreferrer');
       return;
