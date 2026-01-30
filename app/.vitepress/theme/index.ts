@@ -16,6 +16,7 @@ import '@/assets/style/theme/index.scss';
 import '@/assets/style/global.scss';
 import '@/assets/style/element-plus/index.scss';
 
+import '@opendesign-plus/components/styles';
 import MarkdownTitle from '@/components/markdown/MarkdownTitle.vue';
 import MarkdownImage from '@/components/markdown/MarkdownImage.vue';
 import { installer } from '@/shared/analytics';
@@ -43,6 +44,9 @@ export default {
       service: 'docs',
       request(data) {
         request.post('/api-dsapi/query/track/opengauss', data, { showError: false });
+      },
+      isCookieAgreed() {
+        return location.pathname.startsWith('/zh') ? true : document.cookie.includes('agreed-cookiepolicy-en=1');
       },
       onEnable() {
         // 百度埋点
