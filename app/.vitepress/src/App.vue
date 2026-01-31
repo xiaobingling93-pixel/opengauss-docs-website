@@ -21,6 +21,7 @@ router.onAfterRouteChange = () => {
   scrollToTop(0, false);
 };
 
+const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
 const HOME_URL = 'https://opengauss.org';
 const cookieNoticeVisible = ref(false);
 const cookieRef = ref();
@@ -51,6 +52,7 @@ watch(
         community="openGauss"
         v-model:visible="cookieNoticeVisible"
         :detail-url="`${HOME_URL}/${locale}/cookies/`"
+        :cookie-domain="COOKIE_DOMAIN"
       />
     </OPlusConfigProvider>
   </OConfigProvider>
