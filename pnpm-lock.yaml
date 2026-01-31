@@ -13,8 +13,8 @@ importers:
   .:
     dependencies:
       '@opendesign-plus/components':
-        specifier: 0.0.1-rc.5
-        version: 0.0.1-rc.5(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)
+        specifier: 0.0.1-rc.6
+        version: 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)
       '@opensig/open-analytics':
         specifier: 0.0.9
         version: 0.0.9
@@ -72,10 +72,10 @@ importers:
         version: 18.19.130
       '@vitejs/plugin-vue':
         specifier: ^4.4.0
-        version: 4.6.2(vite@5.4.21(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)
+        version: 4.6.2(vite@7.2.6(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)
       '@vitejs/plugin-vue-jsx':
         specifier: ^3.0.2
-        version: 3.1.0(vite@5.4.21(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)
+        version: 3.1.0(vite@7.2.6(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)
       '@vue/eslint-config-prettier':
         specifier: ^8.0.0
         version: 8.0.0(eslint@9.39.1)(prettier@3.7.3)
@@ -797,8 +797,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@opendesign-plus/components@0.0.1-rc.5':
-    resolution: {integrity: sha512-csaDj9VTuafAc8HRuFejKotkSAyb0uIr9aawGgMdEcS+UxfGOUz1V3Tvi+2LCN3pdvtLDqkO7pN0EsvVqI2atA==}
+  '@opendesign-plus/components@0.0.1-rc.6':
+    resolution: {integrity: sha512-EZ5OKQe2ARFFEDqgPoKD4qC9+Ann5W1NOzKptQHmzrm+lq3dHpq8jiJgK0Y3N1r4v4GV+CCMNlTU4J99jNmYKw==}
 
   '@opendesign-plus/composables@0.0.1-rc.6':
     resolution: {integrity: sha512-Uvbcl6Omtu6FwaMWLUQJDbyPUuFyx3zgGJ2qwj3WkcKUUWQ8AuBFMw7Vs3lLDQCg37roBmqvrwnBJE4ST4xPNw==}
@@ -3680,7 +3680,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@opendesign-plus/components@0.0.1-rc.5(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)':
+  '@opendesign-plus/components@0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)':
     dependencies:
       '@opendesign-plus/composables': 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)
       '@opendesign-plus/styles': 0.0.1-rc.2
@@ -4157,19 +4157,19 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@vitejs/plugin-vue-jsx@3.1.0(vite@5.4.21(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)':
+  '@vitejs/plugin-vue-jsx@3.1.0(vite@7.2.6(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
       '@vue/babel-plugin-jsx': 1.5.0(@babel/core@7.28.5)
-      vite: 5.4.21(@types/node@18.19.130)(sass@1.94.2)
+      vite: 7.2.6(@types/node@18.19.130)(sass@1.94.2)
       vue: 3.3.4
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@4.6.2(vite@5.4.21(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)':
+  '@vitejs/plugin-vue@4.6.2(vite@7.2.6(@types/node@18.19.130)(sass@1.94.2))(vue@3.3.4)':
     dependencies:
-      vite: 5.4.21(@types/node@18.19.130)(sass@1.94.2)
+      vite: 7.2.6(@types/node@18.19.130)(sass@1.94.2)
       vue: 3.3.4
 
   '@vitejs/plugin-vue@5.2.4(vite@5.4.21(@types/node@18.19.130)(sass@1.94.2))(vue@3.5.25(typescript@5.2.2))':
