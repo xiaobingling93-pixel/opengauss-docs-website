@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { NEW_VERSIONS_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { parseNamedArgs } from './utils/common.js';
 import { gitCloneAndCheckout } from './utils/git.js';
 import { copyDirectorySync, removeSync } from './utils/file.js';
@@ -37,7 +37,7 @@ function syncDsl() {
  * @param {string} branch - 分支
  */
 function syncDocs(branch) {
-  const version = NEW_VERSIONS_CONFIG[branch];
+  const version = VITEPRESS_VERSIONS_CONFIG[branch];
   gitCloneAndCheckout(REPO, branch, CACHE_PATH);
   copyDirectorySync(path.join(CACHE_PATH, `docs/docs/zh/`), path.join(BUILD_PATH, `app/zh/docs/${version}/`), true);
   copyDirectorySync(path.join(CACHE_PATH, `docs/docs/en/`), path.join(BUILD_PATH, `app/en/docs/${version}/`), true);

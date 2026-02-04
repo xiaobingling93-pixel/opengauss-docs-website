@@ -23,21 +23,23 @@ const showOffset = computed(() => {
 
 watch(
   () => menuVal.value,
-  (val) => {
-    if (val !== props.node.id || !itemRef.value?.$el) {
-      return;
-    }
-
-    const scroller = getMenuScrollerEl();
-    if (!scroller) {
-      return;
-    }
-
-    if (!isElementVisible(itemRef.value.$el, scroller, itemRef.value.$el.offsetHeight)) {
-      scrollIntoView(itemRef.value.$el, scroller, itemRef.value.$el.offsetHeight * 3);
-    }
-  }
+  () => scrollToItem()
 );
+
+const scrollToItem = () => {
+  if (menuVal.value !== props.node.id || !itemRef.value?.$el) {
+    return;
+  }
+
+  const scroller = getMenuScrollerEl();
+  if (!scroller) {
+    return;
+  }
+
+  if (!isElementVisible(itemRef.value.$el, scroller, itemRef.value.$el.offsetHeight)) {
+    scrollIntoView(itemRef.value.$el, scroller, itemRef.value.$el.offsetHeight * 3);
+  }
+};
 
 // -------------------- 阻止点击子内容导致菜单收缩 --------------------
 const stopPropagation = (ev: MouseEvent) => ev.stopPropagation();
@@ -48,6 +50,10 @@ onMounted(() => {
     if (el) {
       el.addEventListener('click', stopPropagation);
     }
+  }
+
+  if (menuVal.value === props.node.id) {
+    setTimeout(scrollToItem, 800);
   }
 });
 

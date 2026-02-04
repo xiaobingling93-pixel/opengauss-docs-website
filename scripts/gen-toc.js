@@ -1,8 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
+import url from 'url';
 import yaml from 'js-yaml';
 
-import { NEW_VERSIONS_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
+import { getGitUrlInfo } from './utils/git.js';
 
 // ============================================ 脚本执行逻辑 ============================================
 const BUILD_PATH = path.resolve();
@@ -19,7 +21,7 @@ const globalHandledYaml = new Map();
   const outputEnToc = [];
 
   for (const item of VERSIONS) {
-    const version = NEW_VERSIONS_CONFIG[item] || item;
+    const version = VITEPRESS_VERSIONS_CONFIG[item] || item;
     const tocZh = buildVersionToc(version, 'zh');
     if (tocZh.length > 0) {
       outputZhToc.push(...tocZh);
@@ -58,6 +60,11 @@ const globalHandledYaml = new Map();
 
       if (item.toc && (item.toc.label || item.toc.href)) {
         console.log(`[toc]：${item.toc.label ? `label: ${item.toc.label}` : ''} ${item.toc.href ? `href: ${item.toc.href}` : ''}`);
+      }
+      
+      if (item.err) {
+        console.log('[原始错误]：');
+        console.log(item.err);
       }
     });
   }
@@ -113,6 +120,7 @@ function buildVersionToc(version, lang) {
       functionName: 'buildVersionToc',
       message: err.message,
       filePath: '',
+      err,
     });
   }
 
@@ -200,6 +208,7 @@ function parseTocYaml(tocFilePath, upstream) {
       message: err.message,
       upstream,
       filePath: tocFilePath,
+      err,
     });
   }
 
@@ -234,9 +243,10 @@ function parseToc(toc, tocFilePath, upstream) {
     globalErrors.push({
       functionName: 'parseToc',
       message: err.message,
-      toc,
+      toc: JSON.stringify(toc),
       upstream,
       filePath: tocFilePath,
+      err,
     });
   }
 
@@ -266,7 +276,7 @@ function parseLabel(toc, tocFilePath, upstream) {
     globalErrors.push({
       functionName: 'parseLabel',
       message: 'label 字段为空',
-      toc,
+      toc: JSON.stringify(toc),
       upstream,
       filePath: tocFilePath,
     });
