@@ -130,7 +130,7 @@ export default {
       TARGET: `_blank`,
     },
     {
-      NAME: `Privacy Policy`,
+      NAME: `Privacy Statement`,
       URL: `/en/privacy/`,
       TARGET: `_blank`,
     },
