@@ -14,7 +14,7 @@ export default {
         TARGET: `_blank`,
       },
       {
-        NAME: `隐私政策`,
+        NAME: `隐私声明`,
         URL: `/zh/privacyPolicy/`,
         TARGET: `_blank`,
       },
