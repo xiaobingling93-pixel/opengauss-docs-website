@@ -91,6 +91,34 @@ export default {
         }
       });
 
+      // 处理表格内的{}
+      md.core.ruler.before('inline', 'td_replace', function (state) {
+        let tdOpen = false;
+        state.tokens.forEach((token) => {
+          if (token.type === 'td_open') {
+            tdOpen = true;
+            return;
+          }
+
+          if (token.type === 'td_close') {
+            tdOpen = false;
+            return;
+          }
+
+          if (
+            token.type === 'inline' &&
+            tdOpen &&
+            !token.content.includes('v-pre') &&
+            !token.content.includes('\\{') &&
+            !token.content.includes('\\}') &&
+            token.content.includes('{') &&
+            token.content.includes('}')
+          ) {
+            token.content = token.content.replace(/\{/g, '\\{');
+          }
+        });
+      });
+
       // 处理资源图片
       md.core.ruler.after('inline', 'fix-image-paths', (state) => {
         if (!state.tokens) return;

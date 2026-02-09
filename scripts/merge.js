@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { NEW_VERSIONS_CONFIG, OLD_VERSIONS_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG, HUGO_VERSIONS_CONFIG } from './config/version.js';
 import { checkoutBranch, isGitRepo, pullRemoteBranch } from './utils/git.js';
 import { copyDirectorySync, removeSync, renameSync, ensureDirSync } from './utils/file.js';
 
@@ -23,7 +23,7 @@ const DOCS_HUGO_PATH = path.join(REPO_PATH, 'docs'); // docs 仓库路径 （hug
   ensureDirSync(buildPath);
 
   // 处理内容
-  if (Object.keys(NEW_VERSIONS_CONFIG).includes(branch)) {
+  if (Object.keys(VITEPRESS_VERSIONS_CONFIG).includes(branch)) {
     normalizeVitepressDocsContent(buildPath, branch, source);
   } else {
     normalizeHugoDocsContent(buildPath, branch);
@@ -43,7 +43,7 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
     throw new Error(`docs 文档仓库不存在： ${DOCS_VITEPRESS_PATH }`);
   }
 
-  const branchName = NEW_VERSIONS_CONFIG[branch];
+  const branchName = VITEPRESS_VERSIONS_CONFIG[branch];
 
   // 复制website-vitepress内容到build目录
   copyDirectorySync(path.join(REPO_PATH, 'website-vitepress'), buildPath, true);
@@ -135,7 +135,7 @@ function normalizeHugoDocsContent(buildPath, branch) {
     throw new Error(`docs (hugo) 文档仓库不存在：${DOCS_HUGO_PATH}`);
   }
 
-  const version = OLD_VERSIONS_CONFIG[branch];
+  const version = HUGO_VERSIONS_CONFIG[branch];
 
   // 复制website-hugo内容到build目录
   copyDirectorySync(path.join(REPO_PATH, 'website-hugo'), buildPath, true);

@@ -1,9 +1,9 @@
-export const NEW_VERSIONS_CONFIG = {
+export const VITEPRESS_VERSIONS_CONFIG = {
   common: 'common',
   master: 'latest',
 };
 
-export const OLD_VERSIONS_CONFIG = {
+export const HUGO_VERSIONS_CONFIG = {
   '7.0.0-RC2': '7.0.0-RC2',
   '7.0.0-RC1': '7.0.0-RC1',
   '6.0.0': '6.0.0',

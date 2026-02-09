@@ -5,7 +5,7 @@ import { parseNamedArgs } from './utils/common.js';
 const ARGS = parseNamedArgs();
 const BRANCH = ARGS.branch || ''; // 文档分支
 
-const branches = BRANCH ? ARGS.branch.split(',') : Object.keys(NEW_VERSIONS_CONFIG)
+const branches = BRANCH ? ARGS.branch.split(',') : Object.keys(VITEPRESS_VERSIONS_CONFIG)
 if (!branches.length) {
   console.error('请指定分支（多个分支用英文逗号,分隔） --branch=<branch1,branch2,...>');
   process.exit(1);
