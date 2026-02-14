@@ -127,7 +127,7 @@ export default {
           tokens.forEach((token) => {
             // 处理 HTML 块和行内元素中的 img 标签
             if ((token.type === 'html_block' || token.type === 'html_inline') && token.content && token.content.includes('<img')) {
-              token.content = token.content.replace(/<img([^>]*)src=['"]([^'">]*)['"]([^>]*)>/gi, (match, before, src, after) => {
+              token.content = token.content.replace(/<img([^>]*)src=['"]?([^'"> ]*)['"]?([^>]*)>/gi, (match, before, src, after) => {
                 // 判断是否为本地地址且没有以 / ./ ../ 开头
                 if (src && !src.startsWith('http') && !src.startsWith('https') && !src.startsWith('/') && !src.startsWith('./') && !src.startsWith('../')) {
                   return `<img${before}src="./${src}"${after}>`;

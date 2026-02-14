@@ -3,8 +3,7 @@ import { computed, inject, onBeforeUnmount, onMounted, ref, watch, type PropType
 import { isArray, OMenuItem, OSubMenu, OIcon, OIconChevronDown } from '@opensig/opendesign';
 
 import type { TreeNodeT } from '@/@types/type-tree';
-import { isElementVisible } from '@/utils/element';
-import { scrollIntoView } from '@/utils/scroll-to';
+import { refreshSelectedMenuItemPosition } from '@/utils/refresh-ui';
 
 const props = defineProps({
   node: {
@@ -36,9 +35,7 @@ const scrollToItem = () => {
     return;
   }
 
-  if (!isElementVisible(itemRef.value.$el, scroller, itemRef.value.$el.offsetHeight)) {
-    scrollIntoView(itemRef.value.$el, scroller, itemRef.value.$el.offsetHeight * 3);
-  }
+  refreshSelectedMenuItemPosition(itemRef.value.$el, scroller);
 };
 
 // -------------------- 阻止点击子内容导致菜单收缩 --------------------
