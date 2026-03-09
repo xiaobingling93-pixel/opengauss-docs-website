@@ -20,7 +20,7 @@ const issuebackRef = ref();
 const floatData = ref([
   {
     visibility: true,
-    img: markRaw(IconSmile as Object),
+    img: markRaw(IconSmile as unknown as object),
     id: 'mark',
     text: computed(() => t('feedback.wantSubmitMark')),
     onClick() {
@@ -29,14 +29,14 @@ const floatData = ref([
   },
   {
     visibility: true,
-    img: markRaw(IconForum as Object),
+    img: markRaw(IconForum as unknown as object),
     id: 'forum',
     text: computed(() => t('feedback.forum')),
     link: import.meta.env.VITE_SERVICE_FORUM_URL,
   },
   {
     visibility: computed(() => locale.value === 'zh'),
-    img: markRaw(IconFAQ as Object),
+    img: markRaw(IconFAQ as unknown as object),
     id: 'faq',
     text: computed(() => t('feedback.faq')),
     link: `/${locale.value}/docs/common/faq/faq.html`,

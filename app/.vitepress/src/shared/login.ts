@@ -34,7 +34,7 @@ export async function doLogout() {
       clearUserAuth();
       window.location.href = location.href;
     }
-  } catch (error) {
+  } catch {
     /* empty */
   }
 }

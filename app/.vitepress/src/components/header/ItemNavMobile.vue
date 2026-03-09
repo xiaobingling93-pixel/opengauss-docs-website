@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
-import { useData, useRouter, useRoute } from 'vitepress';
+import { useData, useRoute } from 'vitepress';
 import i18nConfig from '@/i18n';
 import { isArray, OIcon } from '@opensig/opendesign';
 
@@ -18,7 +18,6 @@ import { useLocale } from '@/composables/useLocale';
 
 const { lang } = useData();
 const { t } = useLocale();
-const router = useRouter();
 const route = useRoute();
 const i18n = computed(() => i18nConfig.global.messages.value[lang.value as 'zh' | 'en']);
 const headerData = computed(() => i18n.value.header.NAV_ROUTER);
@@ -119,7 +118,7 @@ const closeMenu = () => {
       <nav class="o-nav" :class="`o-nav-${lang}`">
         <ul class="o-nav-list">
           <li
-            v-for="(item, index) in headerData"
+            v-for="item in headerData"
             :key="item.ID"
             :class="{
               active: navActive === item.ID,

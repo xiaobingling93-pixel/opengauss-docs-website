@@ -272,7 +272,7 @@ watch(
                   item.title
                 }}</a>
               </div>
-              <div v-for="subItem in item.children" class="o-anchor-item anchor-item" :title="subItem.title">
+              <div v-for="subItem in item.children" :key="subItem.href" class="o-anchor-item anchor-item" :title="subItem.title">
                 <a
                   :href="subItem.href"
                   target="_self"

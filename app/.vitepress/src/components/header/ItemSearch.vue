@@ -28,7 +28,7 @@ const appearanceStore = useAppearance();
 const isDark = computed(() => (appearanceStore.theme === 'dark' ? true : false));
 
 // 搜索事件
-function handleSearchEvent(report?: boolean) {
+function handleSearchEvent() {
   const input = searchInput.value.trim();
   if (!input) return;
 
@@ -37,10 +37,8 @@ function handleSearchEvent(report?: boolean) {
   window.open(`${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/search/?q=${encodeURIComponent(input)}`, '_blank', 'noopener noreferrer');
 }
 
-type SearchItemClickType = 'history' | 'popular' | 'suggest';
-
 // 点击热搜标签
-const onTopSearchItemClick = (val: string, type: SearchItemClickType = 'history') => {
+const onTopSearchItemClick = (val: string) => {
   searchInput.value = val;
   handleSearchEvent();
 };
@@ -143,7 +141,7 @@ const closeSearch = () => {
           <OInput
             v-model="searchInput"
             :placeholder="isShowDrawer ? searchValue.PLEACHOLDER_EXTEND : searchValue.PLEACHOLDER"
-            @keyup.enter="handleSearchEvent(true)"
+            @keyup.enter="handleSearchEvent"
             @focus="showDrawer"
             class="normal"
           >
@@ -160,7 +158,7 @@ const closeSearch = () => {
             <IconSearch></IconSearch>
           </OIcon>
 
-          <span v-if="lePadV && isShowDrawer" class="search-text" @click="handleSearchEvent(true)">
+          <span v-if="lePadV && isShowDrawer" class="search-text" @click="handleSearchEvent">
             {{ searchValue.TEXT }}
           </span>
         </div>

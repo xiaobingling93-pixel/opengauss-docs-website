@@ -37,7 +37,7 @@ async function changeLanguage(newlang: string) {
   }
 }
 
-const getLang = (lang: String, simple?: boolean) => {
+const getLang = (lang: string, simple?: boolean) => {
   return lePadV.value ? (lang === 'zh' ? '中文' : 'EN') : lang === 'zh' ? (simple ? '中' : '简体中文') : simple ? 'EN' : 'English';
 };
 </script>

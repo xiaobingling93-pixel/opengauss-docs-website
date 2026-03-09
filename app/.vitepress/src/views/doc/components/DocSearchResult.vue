@@ -13,7 +13,6 @@ import { useLocale } from '@/composables/useLocale';
 import { useSearchingStore } from '@/stores/common';
 import { scrollToTop } from '@/utils/common';
 import { useNodeStore } from '@/stores/node';
-import { useVersionStore } from '@/stores/version';
 import { findNode, findPrevNode } from '@/utils/tree';
 
 const result = ref<SearchDocItemT[]>([]);
@@ -22,7 +21,6 @@ const { t, locale } = useLocale();
 const searchStore = useSearchingStore();
 const { lePad } = useScreen();
 const nodeStore = useNodeStore();
-const versionStore = useVersionStore();
 
 // 分页数据
 const total = ref(0);

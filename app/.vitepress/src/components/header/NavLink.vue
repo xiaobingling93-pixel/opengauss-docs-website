@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData, useRouter } from 'vitepress';
+import { useData } from 'vitepress';
 
 const { lang } = useData();
 const props = defineProps({
@@ -17,7 +17,6 @@ const isExternal = () => {
 };
 
 const emits = defineEmits(['link-click']);
-const router = useRouter();
 
 const linkClick = () => {
   emits('link-click');
