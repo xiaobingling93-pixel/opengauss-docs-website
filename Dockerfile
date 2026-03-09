@@ -29,7 +29,7 @@ COPY --from=NginxBuilder /etc/nginx/geoip  /etc/nginx/geoip
 COPY --from=NginxBuilder /etc/nginx/mime.types  /etc/nginx/mime.types
 COPY --from=Builder /home/opengauss/docs/app/.vitepress/dist /usr/share/nginx/www/
 COPY ./deploy/monitor.sh ./deploy/entrypoint.sh /etc/nginx/
-COPY ./deploy/nginx/nginx.conf /etc/nginx/nginx.conf.template
+COPY --from=Builder /home/opengauss/docs/deploy/nginx/nginx.conf /etc/nginx/nginx.conf.template
 
 RUN sed -i "s|repo.openeuler.org|mirrors.nju.edu.cn/openeuler|g" /etc/yum.repos.d/openEuler.repo \
     && sed -i '/metalink/d' /etc/yum.repos.d/openEuler.repo \
