@@ -56,7 +56,7 @@ const issuebackRef = ref();
 const floatData = ref([
   {
     visibility: true,
-    img: markRaw(IconForum as Object),
+    img: markRaw(IconForum as unknown as object),
     id: 'forum',
     text: computed(() => t('feedback.forum')),
     textMb: computed(() => t('feedback.forumHelp')),
@@ -65,7 +65,7 @@ const floatData = ref([
   },
   {
     visibility: computed(() => locale.value === 'zh'),
-    img: markRaw(IconFAQ as Object),
+    img: markRaw(IconFAQ as unknown as object),
     id: 'faq',
     text: computed(() => t('feedback.faq')),
     tip: '',

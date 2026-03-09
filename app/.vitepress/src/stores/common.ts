@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { getCustomCookie } from '@/utils/cookie';
 
 // 语言
 export const useLangStore = defineStore('lang', {

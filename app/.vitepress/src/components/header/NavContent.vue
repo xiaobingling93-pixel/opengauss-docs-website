@@ -67,7 +67,7 @@ const descMouseenter = (e: MouseEvent) => {
         </p>
       </div>
       <div v-if="subItem.CHILDREN" class="system-container">
-        <NavLink v-for="system in subItem.CHILDREN" :url="system.URL" class="system" @link-click="linkClick">
+        <NavLink v-for="system in subItem.CHILDREN" :key="system.URL" :url="system.URL" class="system" @link-click="linkClick">
           {{ system.NAME }}
           <OIcon v-if="system.ICON">
             <component :is="system.ICON" class="icon" />

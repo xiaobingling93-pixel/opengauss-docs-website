@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, provide, readonly, ref, type PropType } from 'vue';
+import { onMounted, provide, readonly, ref, type PropType } from 'vue';
 import { useVModel } from '@vueuse/core';
 import { OMenu, OScroller } from '@opensig/opendesign';
 

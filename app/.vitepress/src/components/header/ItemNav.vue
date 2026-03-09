@@ -152,7 +152,7 @@ watch(
             </span>
 
             <template #dropdown>
-              <ODropdownItem v-for="item in hiddenNavs" @click="handleDropdownClick(item)">
+              <ODropdownItem v-for="item in hiddenNavs" :key="item.NAME" @click="handleDropdownClick(item)">
                 {{ item.NAME }}
               </ODropdownItem>
             </template>
