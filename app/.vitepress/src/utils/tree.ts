@@ -60,10 +60,12 @@ export function findNode(node: TreeNodeT, key: keyof TreeNodeT, value: any): Tre
     return node;
   }
 
-  for (let i = 0; i < node.children.length; i++) {
-    const found = findNode(node.children[i], key, value);
-    if (found) {
-      return found;
+  if (Array.isArray(node.children)) {
+    for (let i = 0; i < node.children.length; i++) {
+      const found = findNode(node.children[i], key, value);
+      if (found) {
+        return found;
+      }
     }
   }
 
@@ -84,7 +86,7 @@ export function findPrevNode(node: TreeNodeT, key: keyof TreeNodeT, value: any):
     temp = temp.parent;
   }
 
-  return temp;
+  return temp || null;
 }
 
 /**
