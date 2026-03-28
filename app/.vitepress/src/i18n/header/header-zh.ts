@@ -291,6 +291,16 @@ export default {
             },
           ],
         },
+        {
+          NAME: 'RAG',
+          CHILDREN: [
+            {
+              NAME: 'RAG专区',
+              DESCRIPTION: '了解openGauss在RAG场景的击数生态和适配情况',
+              URL: '/ai/',
+            }
+          ],
+        },
       ],
       SHORTCUT: [
         {
