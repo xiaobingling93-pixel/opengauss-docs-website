@@ -127,13 +127,33 @@ export default {
           tokens.forEach((token) => {
             // 处理 HTML 块和行内元素中的 img 标签
             if ((token.type === 'html_block' || token.type === 'html_inline') && token.content && token.content.includes('<img')) {
+              // 处理本地路径
               token.content = token.content.replace(/<img([^>]*)src=['"]?([^'"> ]*)['"]?([^>]*)>/gi, (match, before, src, after) => {
+                const version = state.env.relativePath.split('/')[2].replace('-lite', '');
                 // 判断是否为本地地址且没有以 / ./ ../ 开头
                 if (src && !src.startsWith('http') && !src.startsWith('https') && !src.startsWith('/') && !src.startsWith('./') && !src.startsWith('../')) {
                   return `<img${before}src="./${src}"${after}>`;
+                } else if (src.includes('../../../docs-lite/')) {
+                  return `<img${before}src="${src.replace(/\.\.\/\.\.\/\.\.\/docs-lite\/(zh|en)\//, `../../${version}-lite/`)}"${after}>`;
+                } else if (src.includes('../../../docs/')) {
+                  return `<img${before}src="${src.replace(/\.\.\/\.\.\/\.\.\/docs\/(zh|en)\//, `../../${version}/`)}"${after}>`;
                 }
+
                 return match;
               });
+            }
+            
+            // 处理 Markdown 标准图片语法的 src
+            if (token.type === 'image') {
+              const src = token.attrs?.[token.attrIndex('src')]?.[1];
+              if (typeof src === 'string') {
+                const version = state.env.relativePath.split('/')[2].replace('-lite', '');
+                if (src.includes('../../../docs-lite/')) {
+                  token.attrs![token.attrIndex('src')]![1] = src.replace(/\.\.\/\.\.\/\.\.\/docs-lite\/(zh|en)\//, `../../${version}-lite/`);
+                } else if (src.includes('../../../docs/')) {
+                  token.attrs![token.attrIndex('src')]![1] = src.replace(/\.\.\/\.\.\/\.\.\/docs\/(zh|en)\//, `../../${version}/`);
+                }
+              }
             }
 
             // 递归处理子 tokens
@@ -190,7 +210,7 @@ export default {
         if (tokens[idx].attrIndex('href') >= 0) {
           const href = tokens[idx].attrs?.[tokens[idx].attrIndex('href')]?.[1];
           if (typeof href === 'string' && href.includes('/docs-lite/')) {
-            const version = env.relativePath.split('/')[2];
+            const version = env.relativePath.split('/')[2].replace('-lite', '');
             const lang = href.includes('/zh/') ? 'zh' : 'en';
             const [_, joinPath] = href.split(lang);
             tokens[idx].attrs![tokens[idx].attrIndex('href')]![1] = `/${lang}/docs/${version}-lite${joinPath.replace('.md', '.html')}`;
@@ -199,7 +219,7 @@ export default {
         return linkOpenRender!(tokens, idx, options, env, self);
       };
 
-      // 处理文档里写的html标签
+      // 处理文档里写的 html 标签
       const defaultHtmlBlockRender = md.renderer.rules.html_block;
       md.renderer.rules.html_block = (tokens, idx, options, env, self) => {
         tokens[idx].content = tokens[idx].content
@@ -213,7 +233,7 @@ export default {
 
         if (/<a([^>]*?)href\s*=\s*['"]([^'"]*\/docs-lite\/[^'"]*)['"]([^>]*?)>/gi.test(renderContent)) {
           return renderContent.replace(/<a([^>]*?)href\s*=\s*['"]([^'"]*?)['"]([^>]*?)>/gi, (_, before, href, after) => {
-            const version = env.relativePath.split('/')[2];
+            const version = env.relativePath.split('/')[2].replace('-lite', '');
             const lang = href.includes('/zh/') ? 'zh' : 'en';
             const [__, joinPath] = href.split(lang);
             const newHref = `/${lang}/docs/${version}-lite${joinPath}`;
@@ -237,7 +257,7 @@ export default {
 
         if (/<a([^>]*?)href\s*=\s*['"]([^'"]*\/docs-lite\/[^'"]*)['"]([^>]*?)>/gi.test(renderContent)) {
           return renderContent.replace(/<a([^>]*?)href\s*=\s*['"]([^'"]*?)['"]([^>]*?)>/gi, (_, before, href, after) => {
-            const version = env.relativePath.split('/')[2];
+            const version = env.relativePath.split('/')[2].replace('-lite', '');
             const lang = href.includes('/zh/') ? 'zh' : 'en';
             const [__, joinPath] = href.split(lang);
             const newHref = `/${lang}/docs/${version}-lite${joinPath}`;

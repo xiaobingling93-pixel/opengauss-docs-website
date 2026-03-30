@@ -1,6 +1,7 @@
 export const VITEPRESS_VERSIONS_CONFIG = {
   common: 'common',
   master: 'latest',
+  '7.0.0-RC3': '7.0.0-RC3',
 };
 
 export const HUGO_VERSIONS_CONFIG = {
