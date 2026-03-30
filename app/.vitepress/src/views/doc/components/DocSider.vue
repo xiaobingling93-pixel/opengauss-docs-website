@@ -142,7 +142,7 @@ watch(
           <OIcon class="icon-expand" @click="switchMenu"><IconExpand /></OIcon>
           <p class="manual-name">{{ nodeStore.manualNode?.label }}</p>
         </div>
-        <DocVersionMobile version="latest" />
+        <DocVersionMobile v-if="versionStore.version !== 'common'" :version="versionStore.prefixVersion" />
       </div>
     </div>
     <div class="doc-sidebar-mb" :class="{ 'is-closed': isSidebarHidden }">
@@ -160,9 +160,9 @@ watch(
   </template>
 
   <div v-else class="doc-sidebar" :class="{ 'is-closed': lePad && isSidebarHidden }">
-    <div class="doc-sidebar-header">
-      <DocVersion version="latest" />
-      <ORadioGroup v-if="versionStore.version !== 'common'" v-model="docType" :disabled="viewStore.isNoMenuView" @change="onChangeDocType">
+    <div class="doc-sidebar-header" v-if="versionStore.version !== 'common'">
+      <DocVersion :version="versionStore.prefixVersion" />
+      <ORadioGroup v-model="docType" :disabled="viewStore.isNoMenuView" @change="onChangeDocType">
         <ORadio value="">{{ t('docs.enterprise') }}</ORadio>
         <ORadio value="lite">{{ t('docs.lite') }}</ORadio>
       </ORadioGroup>
