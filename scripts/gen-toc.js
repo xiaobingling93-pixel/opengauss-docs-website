@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import path from 'path';
-import url from 'url';
 import yaml from 'js-yaml';
 
 import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
@@ -61,7 +60,7 @@ const globalHandledYaml = new Map();
       if (item.toc && (item.toc.label || item.toc.href)) {
         console.log(`[toc]：${item.toc.label ? `label: ${item.toc.label}` : ''} ${item.toc.href ? `href: ${item.toc.href}` : ''}`);
       }
-      
+
       if (item.err) {
         console.log('[原始错误]：');
         console.log(item.err);
@@ -93,25 +92,17 @@ function buildVersionToc(version, lang) {
       globalIds.clear();
     }
 
-    // 扫描获取未加入全量 _toc.yaml 的指南
-    const versionDir = path.join(BUILD_PATH, `./app/${lang}/docs/${version}/`);
-    if (fs.existsSync(versionDir)) {
-      for (const dirname of fs.readdirSync(versionDir)) {
-        const tocPath = path.join(versionDir, dirname, '_toc.yaml');
-        if (!fs.existsSync(tocPath)) {
-          continue;
-        }
+    // 构建单手册
+    if (Array.isArray(toc?.[0]?.single_manuals)) {
+      toc[0].single_manuals.forEach((item) => {
+        const singleManualToc = parseToc(item, tocFilePath);
+        singleManualToc.id = `docs-${lang}-${version}-${singleManualToc.id.split('/').pop()}`;
+        singleManualToc.type = 'docs-single-manual-root';
+        toc.push(singleManualToc);
+        globalIds.clear();
+      });
 
-        if (!globalHandledYaml.has(tocPath)) {
-          const singleToc = parseTocYaml(tocPath);
-          if (singleToc) {
-            singleToc.id = `docs-${lang}-${version}-${dirname}`;
-            singleToc.type = 'docs-single-manual-root';
-            toc.push(singleToc);
-          }
-          globalIds.clear();
-        }
-      }
+      delete toc[0].single_manuals;
     }
 
     return toc;
@@ -227,6 +218,10 @@ function parseToc(toc, tocFilePath, upstream) {
   }
 
   try {
+    if (typeof upstream === 'string' && typeof toc.href === 'string' && typeof !toc.href.startsWith('http') && toc.href.endsWith('_toc.yaml')) {
+      upstream = new URL(toc.href.replace('_toc.yaml', ''), upstream).href;
+    }
+
     toc = parseHref(toc, tocFilePath, upstream);
     if (toc && !toc.id) {
       toc = parseId(toc);
@@ -305,7 +300,7 @@ function parseHref(toc, tocFilePath, upstream) {
     if (!toc.href.startsWith('http') && toc.href.endsWith('.md')) {
       // 如果存在 upstream，代表该 toc 的祖/父节点是远程 toc 节点，需要还原出 git 地址
       if (upstream) {
-        toc.upstream = url.resolve(upstream, toc.href).replace(/\\/g, '/');
+        toc.upstream = new URL(toc.href, upstream).href;
       }
 
       const mdPath = path.resolve(currentDir, toc.href);
